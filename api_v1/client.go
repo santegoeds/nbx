@@ -41,6 +41,11 @@ func (c *Client) Orderbook(ctx context.Context, marketID string) (*Orderbook, er
 	return req.Do(ctx)
 }
 
+func (c *Client) TradeHistory(ctx context.Context, marketID string) ([]HistoricTrade, error) {
+	req := NewTradeHistoryRequest(c, marketID)
+	return req.Do(ctx)
+}
+
 func (c *Client) do(req *http.Request) (*http.Response, error) {
 	if c.Token != "" {
 		req.Header.Set("Authorization", "Bearer "+c.Token)
