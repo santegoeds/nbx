@@ -81,7 +81,7 @@ func (r *AuthenticateRequest) Do(ctx context.Context) error {
 		log.Println("Server error - empty token")
 		return errors.ErrServer
 	}
-
+	r.client.AccountID = r.AccountID
 	r.client.Token = s.Token
 	return nil
 }

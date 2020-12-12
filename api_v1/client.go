@@ -13,6 +13,7 @@ type Client struct {
 	Endpoint   string
 	HttpClient *http.Client
 	Token      string
+	AccountID  string
 }
 
 func NewClient() *Client {
@@ -48,44 +49,40 @@ func (c *Client) TradeHistory(ctx context.Context, marketID string) ([]HistoricT
 
 func (c *Client) LimitBuy(
 	ctx context.Context,
-	accountID string,
 	marketID string,
 	price float64,
 	quantity float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, accountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, marketID)
 	return req.SetLimitBuy(quantity, price).Do(ctx)
 }
 
 func (c *Client) LimitSell(
 	ctx context.Context,
-	accountID string,
 	marketID string,
 	price float64,
 	quantity float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, accountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, marketID)
 	return req.SetLimitSell(quantity, price).Do(ctx)
 }
 
 func (c *Client) MarketBuy(
 	ctx context.Context,
-	accountID string,
 	marketID string,
 	quantity float64,
 	amount float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, accountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, marketID)
 	return req.SetMarketBuy(quantity, amount).Do(ctx)
 }
 
 func (c *Client) MarketSell(
 	ctx context.Context,
-	accountID string,
 	marketID string,
 	quantity float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, accountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, marketID)
 	return req.SetMarketSell(quantity).Do(ctx)
 }
 
