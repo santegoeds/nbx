@@ -86,6 +86,11 @@ func (c *Client) MarketSell(
 	return req.SetMarketSell(quantity).Do(ctx)
 }
 
+func (c *Client) GetOrder(ctx context.Context, orderID string) (*Order, error) {
+	req := NewGetOrderRequest(c, c.AccountID, orderID)
+	return req.Do(ctx)
+}
+
 func (c *Client) do(req *http.Request) (*http.Response, error) {
 	if c.Token != "" {
 		req.Header.Set("Authorization", "Bearer "+c.Token)

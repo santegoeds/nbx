@@ -36,7 +36,7 @@ type HistoricOrder struct {
 }
 
 type HistoricTrade struct {
-	CreatedAt  time.Time     `json:"createdAt,string"`
+	CreatedAt  time.Time     `json:"createdAt"`
 	MakerOrder HistoricOrder `json:"makerOrder"`
 	Price      float64       `json:"price,string"`
 	Quantity   float64       `json:"quantity,string"`
