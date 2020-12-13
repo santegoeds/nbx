@@ -102,6 +102,9 @@ func (r *CreateOrderRequest) Do(ctx context.Context) (string, error) {
 	}
 
 	data, err := json.Marshal(body)
+	if err != nil {
+		return "", err
+	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, bytes.NewBuffer(data))
 	if err != nil {
@@ -141,7 +144,7 @@ type creatOrderPayload struct {
 type payloadExecution struct {
 	Type        string             `json:"type"`
 	TimeInForce payloadTimeInForce `json:"timeInForce"`
-	Price       *string            `json:"price,omitemtpy"`
+	Price       *string            `json:"price,omitempty"`
 	Freeze      *payloadFreeze     `json:"freeze,omitempty"`
 }
 

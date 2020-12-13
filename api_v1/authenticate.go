@@ -94,7 +94,9 @@ func (r *AuthenticateRequest) sign(req *http.Request, body string) error {
 	}
 	msg := []byte(nowMillies + req.Method + req.URL.Path + body)
 	mac := hmac.New(sha256.New, secret)
-	mac.Write(msg)
+	if _, err = mac.Write(msg); err != nil {
+		return err
+	}
 	signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 
 	req.Header.Set("Authorization", "NBX-HMAC-SHA256 "+r.Passphrase+":"+signature)
