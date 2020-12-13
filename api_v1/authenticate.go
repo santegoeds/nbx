@@ -26,27 +26,27 @@ const (
 
 type AuthenticateRequest struct {
 	client     *Client
-	AccountID  string
-	KeyID      string
-	Secret     string
-	Passphrase string
-	Lifetime   Lifetime
+	accountID  string
+	keyID      string
+	secret     string
+	passphrase string
+	lifetime   Lifetime
 }
 
 func NewAuthenticateRequest(c *Client, accountID, keyID, secret, passphrase string, lifetime Lifetime) *AuthenticateRequest {
 	return &AuthenticateRequest{
 		client:     c,
-		AccountID:  accountID,
-		KeyID:      keyID,
-		Secret:     secret,
-		Passphrase: passphrase,
-		Lifetime:   lifetime,
+		accountID:  accountID,
+		keyID:      keyID,
+		secret:     secret,
+		passphrase: passphrase,
+		lifetime:   lifetime,
 	}
 }
 
 func (r *AuthenticateRequest) Do(ctx context.Context) error {
-	path := "/accounts/" + r.AccountID + "/api_keys/" + r.KeyID + "/tokens"
-	body := `{"expiresIn": ` + strconv.Itoa(int(r.Lifetime)) + "}"
+	path := "/accounts/" + r.accountID + "/api_keys/" + r.keyID + "/tokens"
+	body := `{"expiresIn": ` + strconv.Itoa(int(r.lifetime)) + "}"
 
 	endpoint := r.client.Endpoint + path
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, strings.NewReader(body))
@@ -81,14 +81,14 @@ func (r *AuthenticateRequest) Do(ctx context.Context) error {
 		log.Println("Server error - empty token")
 		return errors.ErrServer
 	}
-	r.client.AccountID = r.AccountID
+	r.client.AccountID = r.accountID
 	r.client.Token = s.Token
 	return nil
 }
 
 func (r *AuthenticateRequest) sign(req *http.Request, body string) error {
 	nowMillies := strconv.FormatInt(time.Now().UnixNano()/1000_000, 10)
-	secret, err := base64.StdEncoding.DecodeString(r.Secret)
+	secret, err := base64.StdEncoding.DecodeString(r.secret)
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ func (r *AuthenticateRequest) sign(req *http.Request, body string) error {
 	}
 	signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 
-	req.Header.Set("Authorization", "NBX-HMAC-SHA256 "+r.Passphrase+":"+signature)
+	req.Header.Set("Authorization", "NBX-HMAC-SHA256 "+r.passphrase+":"+signature)
 	req.Header.Set("X-NBX-TIMESTAMP", nowMillies)
 	return nil
 }
