@@ -1,0 +1,11 @@
+---
+name: linters
+on: [push]
+jobs:
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: run
+        uses: actions-contrib/golangci-lint@v1
