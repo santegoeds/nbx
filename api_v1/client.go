@@ -96,6 +96,11 @@ func (c *Client) CancelOrder(ctx context.Context, orderID string) error {
 	return req.Do(ctx)
 }
 
+func (c *Client) GetOrders(ctx context.Context) ([]Order, error) {
+	req := NewGetOrdersRequest(c, c.AccountID)
+	return req.Do(ctx)
+}
+
 func (c *Client) do(req *http.Request) (*http.Response, error) {
 	if c.Token != "" {
 		req.Header.Set("Authorization", "Bearer "+c.Token)
