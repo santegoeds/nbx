@@ -16,13 +16,13 @@ func TestGetOrder(t *testing.T) {
 	key := os.Getenv("KEY")
 	secret := os.Getenv("SECRET")
 	passphrase := os.Getenv("PASSPHRASE")
-	marketID := "BTC-NOK"
+	market := "BTC-NOK"
 
 	client := api_v1.NewClient()
 	err := client.Authenticate(context.TODO(), accountID, key, secret, passphrase, api_v1.Minute)
 	require.NoError(t, err)
 
-	orderID, err := client.MarketBuy(context.TODO(), marketID, 0.000001, 0.01)
+	orderID, err := client.MarketBuy(context.TODO(), market, 0.000001, 0.01)
 	require.NoError(t, err)
 	require.NotEmpty(t, orderID)
 
@@ -30,7 +30,7 @@ func TestGetOrder(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, orderID, order.ID)
-	require.Equal(t, marketID, order.Market)
+	require.Equal(t, market, order.Market)
 	require.Greater(t, order.Quantity, 0.0)
 	require.Equal(t, "BUY", order.Side)
 	now := time.Now()

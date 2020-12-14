@@ -12,10 +12,10 @@ import (
 
 func TestOrderbook(t *testing.T) {
 	client := api_v1.NewClient()
-	marketID := "BTC-NOK"
+	market := "BTC-NOK"
 
 	require.True(t, t.Run("should return a full orderbook", func(t *testing.T) {
-		orderbook, err := client.Orderbook(context.TODO(), marketID)
+		orderbook, err := client.Orderbook(context.TODO(), market)
 		require.NoError(t, err)
 		require.NotEmpty(t, orderbook.Buys)
 		require.NotEmpty(t, orderbook.Sells)
@@ -38,7 +38,7 @@ func TestOrderbook(t *testing.T) {
 	}))
 
 	require.True(t, t.Run("should return an orderbook with only BUY orders", func(t *testing.T) {
-		req := api_v1.NewOrderbookRequest(client, marketID)
+		req := api_v1.NewOrderbookRequest(client, market)
 		req.Side = "BUY"
 
 		orderbook, err := req.Do(context.TODO())
@@ -54,7 +54,7 @@ func TestOrderbook(t *testing.T) {
 	}))
 
 	require.True(t, t.Run("should return an orderbook with only SELL orders", func(t *testing.T) {
-		req := api_v1.NewOrderbookRequest(client, marketID)
+		req := api_v1.NewOrderbookRequest(client, market)
 		req.Side = "SELL"
 
 		orderbook, err := req.Do(context.TODO())

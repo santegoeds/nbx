@@ -11,10 +11,10 @@ import (
 
 func TestTradeHistory(t *testing.T) {
 	client := api_v1.NewClient()
-	marketID := "BTC-NOK"
+	market := "BTC-NOK"
 
 	require.True(t, t.Run("first page without pagination", func(t *testing.T) {
-		trades, err := client.TradeHistory(context.TODO(), marketID)
+		trades, err := client.TradeHistory(context.TODO(), market)
 		require.NoError(t, err)
 		require.NotEmpty(t, trades)
 
@@ -36,7 +36,7 @@ func TestTradeHistory(t *testing.T) {
 	}))
 
 	require.True(t, t.Run("request with pagination", func(t *testing.T) {
-		req := api_v1.NewTradeHistoryRequest(client, marketID)
+		req := api_v1.NewTradeHistoryRequest(client, market)
 		firstPage, err := req.Do(context.TODO())
 		require.NoError(t, err)
 		require.NotEmpty(t, firstPage)

@@ -14,36 +14,36 @@ func TestCreateOrder(t *testing.T) {
 	key := os.Getenv("KEY")
 	secret := os.Getenv("SECRET")
 	passphrase := os.Getenv("PASSPHRASE")
-	marketID := "BTC-NOK"
+	market := "BTC-NOK"
 
 	client := api_v1.NewClient()
 	err := client.Authenticate(context.TODO(), accountID, key, secret, passphrase, api_v1.Minute)
 	require.NoError(t, err)
 
 	require.True(t, t.Run("create market buy order", func(t *testing.T) {
-		orderID, err := client.MarketBuy(context.TODO(), marketID, 0.000001, 0.01)
+		orderID, err := client.MarketBuy(context.TODO(), market, 0.000001, 0.01)
 		require.NoError(t, err)
 		require.NotEmpty(t, orderID)
 	}))
 
 	require.True(t, t.Run("create market sell order", func(t *testing.T) {
-		orderID, err := client.MarketSell(context.TODO(), marketID, 0.000001)
+		orderID, err := client.MarketSell(context.TODO(), market, 0.000001)
 		require.NoError(t, err)
 		require.NotEmpty(t, orderID)
 	}))
 
 	require.True(t, t.Run("create limit buy order", func(t *testing.T) {
-		orderID, err := client.LimitBuy(context.TODO(), marketID, 10.0, 1)
+		orderID, err := client.LimitBuy(context.TODO(), market, 10.0, 1)
 		require.NoError(t, err)
 		require.NotEmpty(t, orderID)
 	}))
 
 	require.True(t, t.Run("create limit sell order", func(t *testing.T) {
-		orderbook, err := client.Orderbook(context.TODO(), marketID)
+		orderbook, err := client.Orderbook(context.TODO(), market)
 		require.NoError(t, err)
 
 		price := orderbook.Sells[len(orderbook.Sells)-1].Price * 2
-		orderID, err := client.LimitSell(context.TODO(), marketID, price, 0.000001)
+		orderID, err := client.LimitSell(context.TODO(), market, price, 0.000001)
 		require.NoError(t, err)
 		require.NotEmpty(t, orderID)
 	}))

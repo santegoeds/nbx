@@ -10,14 +10,14 @@ import (
 
 type TradeHistoryRequest struct {
 	client      *Client
-	marketID    string
+	market      string
 	pagingState string
 }
 
-func NewTradeHistoryRequest(client *Client, marketID string) *TradeHistoryRequest {
+func NewTradeHistoryRequest(client *Client, market string) *TradeHistoryRequest {
 	return &TradeHistoryRequest{
-		client:   client,
-		marketID: marketID,
+		client: client,
+		market: market,
 	}
 }
 
@@ -44,7 +44,7 @@ type HistoricTrade struct {
 }
 
 func (r *TradeHistoryRequest) Do(ctx context.Context) ([]HistoricTrade, error) {
-	endpoint := r.client.Endpoint + "/markets/" + r.marketID + "/trades"
+	endpoint := r.client.Endpoint + "/markets/" + r.market + "/trades"
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {

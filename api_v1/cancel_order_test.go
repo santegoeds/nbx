@@ -16,13 +16,13 @@ func TestCancelOrder(t *testing.T) {
 	key := os.Getenv("KEY")
 	secret := os.Getenv("SECRET")
 	passphrase := os.Getenv("PASSPHRASE")
-	marketID := "BTC-NOK"
+	market := "BTC-NOK"
 
 	client := api_v1.NewClient()
 	err := client.Authenticate(context.TODO(), accountID, key, secret, passphrase, api_v1.Minute)
 	require.NoError(t, err)
 
-	orderID, err := client.MarketBuy(context.TODO(), marketID, 0.000001, 0.01)
+	orderID, err := client.MarketBuy(context.TODO(), market, 0.000001, 0.01)
 	require.NoError(t, err)
 	require.NotEmpty(t, orderID)
 

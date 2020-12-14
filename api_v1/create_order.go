@@ -24,7 +24,7 @@ const (
 type CreateOrderRequest struct {
 	client          *Client
 	accountID       string
-	marketID        string
+	market          string
 	side            string
 	quantity        string
 	orderType       string
@@ -33,11 +33,11 @@ type CreateOrderRequest struct {
 	timeInForceType string
 }
 
-func NewCreateOrderRequest(client *Client, accountID, marketID string) *CreateOrderRequest {
+func NewCreateOrderRequest(client *Client, accountID, market string) *CreateOrderRequest {
 	return &CreateOrderRequest{
 		client:    client,
 		accountID: accountID,
-		marketID:  marketID,
+		market:    market,
 	}
 }
 
@@ -80,7 +80,7 @@ func (r *CreateOrderRequest) Do(ctx context.Context) (string, error) {
 	endpoint := r.client.Endpoint + "/accounts/" + r.accountID + "/orders"
 
 	body := creatOrderPayload{
-		Market:   r.marketID,
+		Market:   r.market,
 		Quantity: r.quantity,
 		Side:     r.side,
 		Execution: payloadExecution{

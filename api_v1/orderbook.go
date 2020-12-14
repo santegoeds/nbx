@@ -9,9 +9,9 @@ import (
 )
 
 type OrderbookRequest struct {
-	client   *Client
-	marketID string
-	Side     string
+	client *Client
+	market string
+	Side   string
 }
 
 type OrderbookOrder struct {
@@ -26,15 +26,15 @@ type Orderbook struct {
 	Sells []OrderbookOrder
 }
 
-func NewOrderbookRequest(client *Client, marketID string) *OrderbookRequest {
+func NewOrderbookRequest(client *Client, market string) *OrderbookRequest {
 	return &OrderbookRequest{
-		client:   client,
-		marketID: marketID,
+		client: client,
+		market: market,
 	}
 }
 
 func (r *OrderbookRequest) Do(ctx context.Context) (*Orderbook, error) {
-	endpoint := r.client.Endpoint + "/markets/" + r.marketID + "/orders"
+	endpoint := r.client.Endpoint + "/markets/" + r.market + "/orders"
 	if r.Side != "" {
 		endpoint += "?side=" + r.Side
 	}

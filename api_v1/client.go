@@ -37,52 +37,48 @@ func (c *Client) Authenticate(
 	return req.Do(ctx)
 }
 
-func (c *Client) Orderbook(ctx context.Context, marketID string) (*Orderbook, error) {
-	req := NewOrderbookRequest(c, marketID)
+func (c *Client) Orderbook(ctx context.Context, market string) (*Orderbook, error) {
+	req := NewOrderbookRequest(c, market)
 	return req.Do(ctx)
 }
 
-func (c *Client) TradeHistory(ctx context.Context, marketID string) ([]HistoricTrade, error) {
-	req := NewTradeHistoryRequest(c, marketID)
+func (c *Client) TradeHistory(ctx context.Context, market string) ([]HistoricTrade, error) {
+	req := NewTradeHistoryRequest(c, market)
 	return req.Do(ctx)
 }
 
 func (c *Client) LimitBuy(
 	ctx context.Context,
-	marketID string,
+	market string,
 	price float64,
 	quantity float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, c.AccountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, market)
 	return req.SetLimitBuy(quantity, price).Do(ctx)
 }
 
 func (c *Client) LimitSell(
 	ctx context.Context,
-	marketID string,
+	market string,
 	price float64,
 	quantity float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, c.AccountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, market)
 	return req.SetLimitSell(quantity, price).Do(ctx)
 }
 
 func (c *Client) MarketBuy(
 	ctx context.Context,
-	marketID string,
+	market string,
 	quantity float64,
 	amount float64,
 ) (string, error) {
-	req := NewCreateOrderRequest(c, c.AccountID, marketID)
+	req := NewCreateOrderRequest(c, c.AccountID, market)
 	return req.SetMarketBuy(quantity, amount).Do(ctx)
 }
 
-func (c *Client) MarketSell(
-	ctx context.Context,
-	marketID string,
-	quantity float64,
-) (string, error) {
-	req := NewCreateOrderRequest(c, c.AccountID, marketID)
+func (c *Client) MarketSell(ctx context.Context, market string, quantity float64) (string, error) {
+	req := NewCreateOrderRequest(c, c.AccountID, market)
 	return req.SetMarketSell(quantity).Do(ctx)
 }
 
