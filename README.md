@@ -24,25 +24,25 @@ const market = "BTC-NOK"
 func main() {
 	ctx := context.Background()
 
-	// Create a new client
+	// Create a new client.
 	client := nbx.NewClient()
 
-	// Fetch historic trades (no authentication needed)
+	// Fetch historic trades (no authentication needed).
 	trades, _ := client.TradeHistory(ctx, market)
 	pretty.Println(trades)
 
-	// Paginate through all historic trades (no authentication needed)
+	// Paginate through all historic trades (no authentication needed).
 	req := nbx.NewTradeHistoryRequest(client, market)
 	trades, _ = req.Do(ctx)
 	for req.HasNextPage() {
 		trades, _ = req.Do(ctx)
 	}
 
-	// Fetch the orderbook (no authentication needed)
+	// Fetch the orderbook (no authentication needed).
 	orderbook, _ := client.Orderbook(ctx, market)
 	pretty.Println(orderbook)
 
-	// Read authentication details from environment
+	// Read authentication details from environment.
 	accountID := os.Getenv("ACCOUNT_ID")
 	keyID := os.Getenv("KEY")
 	secret := os.Getenv("SECRET")
@@ -51,21 +51,21 @@ func main() {
 	// Authenticate and request a token with a lifetime of one minute.
 	_ = client.Authenticate(ctx, accountID, keyID, secret, passphrase, nbx.Minute)
 
-	// Create a market buy order to buy 0.00001 BTC for no more than 10 NOK
+	// Create a market buy order to buy 0.00001 BTC for no more than 10 NOK.
 	orderID, _ := client.MarketBuy(ctx, market, 0.00001, 10.0)
 
-	// Get the order details
+	// Get the order details.
 	order, _ := client.GetOrder(ctx, orderID)
 	pretty.Println(order)
 
-	// Create a limit order to sell 0.00001 BTC at a price of 200,000 NOK
+	// Create a limit order to sell 0.00001 BTC at a price of 200,000 NOK.
 	orderID, _ = client.LimitSell(ctx, market, 200_000.0, 0.00001)
 
-	// Get all orders for the account
-	orders, _ := client.GetOrders(ctx)
+	// Get all orders for the account.
+	orders, _ := client.Orders(ctx)
 	pretty.Println(orders)
 
-	// Cancel limit order
+	// Cancel limit order.
 	_ = client.CancelOrder(ctx, orderID)
 }
 ```

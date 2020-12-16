@@ -21,7 +21,7 @@ func TestGetOrders(t *testing.T) {
 	err := client.Authenticate(context.TODO(), accountID, key, secret, passphrase, api_v1.Minute)
 	require.NoError(t, err)
 
-	orders, err := client.GetOrders(context.TODO())
+	orders, err := client.Orders(context.TODO())
 	require.NoError(t, err)
 	require.NotEmpty(t, orders)
 
