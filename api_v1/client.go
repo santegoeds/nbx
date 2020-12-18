@@ -14,6 +14,7 @@ type Client struct {
 	HttpClient *http.Client
 	Token      string
 	AccountID  string
+	markets    map[string]Market
 }
 
 func NewClient() *Client {
@@ -34,6 +35,11 @@ func (c *Client) Authenticate(
 ) error {
 	req := NewAuthenticateRequest(c, accountID, keyID, secret, passphrase, lifetime)
 
+	return req.Do(ctx)
+}
+
+func (c *Client) Markets(ctx context.Context) (map[string]Market, error) {
+	req := NewMarketsRequest(c)
 	return req.Do(ctx)
 }
 
