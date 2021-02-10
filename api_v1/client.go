@@ -38,6 +38,16 @@ func (c *Client) Authenticate(
 	return req.Do(ctx)
 }
 
+func (c *Client) Assets(ctx context.Context) (map[string]Asset, error) {
+	req := NewAssetsRequest(c)
+	return req.Do(ctx)
+}
+
+func (c *Client) Asset(ctx context.Context, asset string) (*Asset, error) {
+	req := NewAssetRequest(c, asset)
+	return req.Do(ctx)
+}
+
 func (c *Client) Markets(ctx context.Context) (map[string]Market, error) {
 	req := NewMarketsRequest(c)
 	return req.Do(ctx)
