@@ -7,5 +7,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: run
-        uses: actions-contrib/golangci-lint@v1
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.36
