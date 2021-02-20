@@ -11,7 +11,7 @@ import (
 type TradeHistoryRequest struct {
 	client      *Client
 	market      string
-	pagingState string
+	nextPage string
 }
 
 func NewTradeHistoryRequest(client *Client, market string) *TradeHistoryRequest {
@@ -22,7 +22,7 @@ func NewTradeHistoryRequest(client *Client, market string) *TradeHistoryRequest 
 }
 
 func (r *TradeHistoryRequest) HasNextPage() bool {
-	return r.pagingState != ""
+	return r.nextPage != ""
 }
 
 type HistoricTradeAccount struct {
@@ -44,15 +44,17 @@ type HistoricTrade struct {
 }
 
 func (r *TradeHistoryRequest) Do(ctx context.Context) ([]HistoricTrade, error) {
-	endpoint := r.client.Endpoint + "/markets/" + r.market + "/trades"
+	var endpoint string
+	if r.nextPage != "" {
+		endpoint = r.nextPage
+	} else {
+		endpoint = r.client.Endpoint + "/markets/" + r.market + "/trades"
+	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
 		log.Printf("Failed to create request for endpoint %s\n", endpoint)
 		return nil, err
-	}
-	if r.pagingState != "" {
-		req.Header.Set("x-paging-state", r.pagingState)
 	}
 
 	rsp, err := r.client.HttpClient.Do(req)
@@ -67,7 +69,7 @@ func (r *TradeHistoryRequest) Do(ctx context.Context) ([]HistoricTrade, error) {
 	}
 
 	// Update the paging state so that the same request can be used to get the next page.
-	r.pagingState = rsp.Header.Get("x-paging-state")
+	r.nextPage = rsp.Header.Get("x-next-page-url")
 
 	dec := json.NewDecoder(rsp.Body)
 	trades := make([]HistoricTrade, 0, 100)

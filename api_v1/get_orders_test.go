@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/kr/pretty"
 	"github.com/santegoeds/nbx/api_v1"
 
 	"github.com/stretchr/testify/require"
@@ -24,6 +25,8 @@ func TestGetOrders(t *testing.T) {
 	orders, err := client.Orders(context.TODO())
 	require.NoError(t, err)
 	require.NotEmpty(t, orders)
+
+	pretty.Println(orders)
 
 	now := time.Now()
 	for _, order := range orders {
