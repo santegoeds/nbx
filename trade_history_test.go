@@ -1,16 +1,15 @@
-package api_v1_test
+package nbx_test
 
 import (
 	"context"
+	"github.com/santegoeds/nbx"
 	"testing"
-
-	"github.com/santegoeds/nbx/api_v1"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestTradeHistory(t *testing.T) {
-	client := api_v1.NewClient()
+	client := nbx.NewClient()
 	market := "BTC-NOK"
 
 	require.True(t, t.Run("first page without pagination", func(t *testing.T) {
@@ -36,7 +35,7 @@ func TestTradeHistory(t *testing.T) {
 	}))
 
 	require.True(t, t.Run("request with pagination", func(t *testing.T) {
-		req := api_v1.NewTradeHistoryRequest(client, market)
+		req := nbx.NewTradeHistoryRequest(client, market)
 		firstPage, err := req.Do(context.TODO())
 		require.NoError(t, err)
 		require.NotEmpty(t, firstPage)

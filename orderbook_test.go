@@ -1,17 +1,16 @@
-package api_v1_test
+package nbx_test
 
 import (
 	"context"
+	"github.com/santegoeds/nbx"
 	"math"
 	"testing"
-
-	"github.com/santegoeds/nbx/api_v1"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestOrderbook(t *testing.T) {
-	client := api_v1.NewClient()
+	client := nbx.NewClient()
 	market := "BTC-NOK"
 
 	require.True(t, t.Run("should return a full orderbook", func(t *testing.T) {
@@ -38,7 +37,7 @@ func TestOrderbook(t *testing.T) {
 	}))
 
 	require.True(t, t.Run("should return an orderbook with only BUY orders", func(t *testing.T) {
-		req := api_v1.NewOrderbookRequest(client, market)
+		req := nbx.NewOrderbookRequest(client, market)
 		req.Side = "BUY"
 
 		orderbook, err := req.Do(context.TODO())
@@ -54,7 +53,7 @@ func TestOrderbook(t *testing.T) {
 	}))
 
 	require.True(t, t.Run("should return an orderbook with only SELL orders", func(t *testing.T) {
-		req := api_v1.NewOrderbookRequest(client, market)
+		req := nbx.NewOrderbookRequest(client, market)
 		req.Side = "SELL"
 
 		orderbook, err := req.Do(context.TODO())
